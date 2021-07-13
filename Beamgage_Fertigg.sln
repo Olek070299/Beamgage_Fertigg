@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beamgage_Fertigg", "Beamgage_Fertigg\Beamgage_Fertigg.csproj", "{277C2F2E-12A4-4F7F-AD95-05429F46EE63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{277C2F2E-12A4-4F7F-AD95-05429F46EE63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{277C2F2E-12A4-4F7F-AD95-05429F46EE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{277C2F2E-12A4-4F7F-AD95-05429F46EE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{277C2F2E-12A4-4F7F-AD95-05429F46EE63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10EE8013-2C04-47DC-8D58-4BAF26200FEB}
+	EndGlobalSection
+EndGlobal
