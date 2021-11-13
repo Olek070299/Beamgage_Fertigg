@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace Beamgage_Fertigg
 {
-    class Runner
+   public class Runner
     {
         private List<double> hpixel;
         public List<double> HPixel {
@@ -139,7 +139,7 @@ namespace Beamgage_Fertigg
 
         public void KaltePixelFinden()
 
-         
+         /*Suche nach Kalten Pixel, dafür gesamte Kamera bescheinen lassen*/
         {
             kpixel = new List<double>();
             KPixel = new List<double>();
@@ -155,6 +155,8 @@ namespace Beamgage_Fertigg
 
            }
         }
+
+        /*Suche heiße Pixel, dafür kamera verdunkeln*/
         public void HeißePixelFinden()
         {
             hpixel = new List<double>();
@@ -170,6 +172,8 @@ namespace Beamgage_Fertigg
 
             }
         }
+        /*Heiße und kalte Pixel durch den median der umliegenden Pixel ersetzen dafür haben wir die Positionen der heißen und kalten pixel in listen gespeichert
+         und jetzt schauen wir wenn ein heißer oder kalter Pixel erkannt wird wird dieser ersetzt*/
         public void RichtigeFrameFunktionMitHundKPixeln()
         {
             for (int i = 0; i <= frameData.Length - 1; i++)

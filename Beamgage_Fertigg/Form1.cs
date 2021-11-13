@@ -79,12 +79,19 @@ namespace Beamgage_Fertigg
         private void HeißePixel_Click(object sender, EventArgs e)
         {
             //test2.NewFrameFunction();
-          
-            test2.getHotspot(7.38E-5, 0.2, 0.00000369, 0.00000369, 100, 100, 0.01);
-            pictureBox1.Image = test2.Bitmaa;
-           
 
-           for (int j = 0; j < 100; j++)
+            test2.getHotspot(2.7675E-4, 0.2, 0.00000369, 0.00000369, 100, 100, 0.01);
+            pictureBox1.Image = test2.Bitmaa;
+
+            /*for (int y = 0; y < 2; y++)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    listBox1.Items.Add(test2.Maske[i, y]);
+                }
+            }*/
+
+            for (int j = 0; j < 100; j++)
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -92,8 +99,8 @@ namespace Beamgage_Fertigg
                 }
                
             }
-            //listBox1.Items.Add(test2.Hottspot);
-            //listBox1.Items.Add(test2.ProzentualerAnteil);
+            listBox1.Items.Add(test2.Hottspot);
+            listBox1.Items.Add(test2.ProzentualerAnteil);
         }
     }
 }

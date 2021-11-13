@@ -12,7 +12,7 @@ namespace Beamgage_Fertigg
 {
 
 
-    class Hotspot : Runner
+   public class Hotspot : Runner
     {
         private double prozentualerAnteil;
 
@@ -128,6 +128,13 @@ namespace Beamgage_Fertigg
             get { return gefiltertesbild; }
             set { gefiltertesbild = value; }
         }
+        private double[,] framedatain2d;
+        public double[,] Framedatain2d
+        {
+            get { return framedatain2d; }
+            set { framedatain2d = value; }
+        }
+
 
 
 
@@ -159,11 +166,14 @@ namespace Beamgage_Fertigg
             pixelgenauigkeit = new List<double>();
             // xks= new double[durchmesser + 1, genauigkeitderSubpixel*genauigkeitderSubpixel];
             // yks=new double[durchmesser + 1, genauigkeitderSubpixel*genauigkeitderSubpixel];
+            //Prüfen ob die Maske gerade oder ungerade ist, dass ist wichtig für die spätere Faltung
+
+            //wenn maske gerade, füge eine spalte und zeile mit nullen an sodass sie ungerade wird.Wichtig für Faltung, da Faltung nur mit ungeraden Matrizen sinnvoll
             if (durchmesser % 2 == 0)
             {
                 double[,] BeispielMaske = new double[durchmesser + 1, durchmesser + 1];
 
-                //maske = new double[Convert.ToInt32(Math.Round(DurchmesserinPixel)) + 1, Convert.ToInt32(Math.Round(DurchmesserinPixel)) + 1];
+               
                 for (int y = 0; y <= durchmesser; y++)
                 {
                     for (int x = 0; x <= durchmesser; x++)
@@ -187,13 +197,14 @@ namespace Beamgage_Fertigg
                 }
                 maske = BeispielMaske;
             }
+            //Wenn Maske ungerade nichts verändern
             else
             {
                 maske = new double[durchmesser, durchmesser];
             }
 
 
-
+            //speicher die x-Koordinaten von den punkten a,b,c,d (bilden die Eckpunkte des Pixels )in einem 2d array
             int n = 0;
             double radius = (double)durchmesser / 2;
             for (int y = 0; y < durchmesser; y++)
@@ -215,7 +226,7 @@ namespace Beamgage_Fertigg
                     n++;
                 }
             }
-
+            //speicher die y-Koordinaten von den punkten a,b,c,d (bilden die Eckpunkte des Pixels )in einem 2d array
             n = 0;
             for (int y = 0; y < durchmesser; y++)
             {
@@ -237,7 +248,7 @@ namespace Beamgage_Fertigg
                 }
             }
 
-
+            //Berechne aus den x-koordinaten der Eckpunkte die Entfernungen zur Mitte des Kreises mittels des Radius und speicher dieses Wieder in einem 2d array, wo einmal a,b,c,d und eren Entfernung zum mittelpunkt sind
             for (int y = 0; y < durchmesser * durchmesser; y++)
             {
                 for (int x = 0; x <= 3; x++)
@@ -254,6 +265,7 @@ namespace Beamgage_Fertigg
                 }
             }
 
+            //Berechne aus den y-koordinaten der Eckpunkte die Entfernungen zur Mitte des Kreises mittels des Radius und speicher dieses Wieder in einem 2d array, wo einmal a,b,c,d und eren Entfernung zum mittelpunkt sind
             for (int y = 0; y < durchmesser * durchmesser; y++)
             {
                 for (int x = 0; x <= 3; x++)
@@ -269,18 +281,22 @@ namespace Beamgage_Fertigg
 
                 }
             }
-
+            //Berechne die Länge des Vektores vom Mittelpunkt zu dem Punkt [x,y] 
             double laenge = 0;
             for (int y = 0; y < durchmesser * durchmesser; y++)
             {
-                for (int x = 0; x <= 3; x++)
+                for (int x = 0; x < 4; x++)
                 {
                     laenge = Math.Sqrt((xkentfernung[x, y] * xkentfernung[x, y]) + (ykentfernung[x, y] * ykentfernung[x, y]));
                     vektorlaengen[x, y] = laenge;
                 }
 
             }
-
+            /*Die vektorlängen der einzelnen Eckpunkte des Pixels werden in einer Tabelle gespeichert. Nun wird geschaut von dem 0 Pixel bis zu dem Letzten Pixel 
+             ob alle 4 Eckpunkte eine länge haben, die kürzer ist als der Radius des Kreises,wenn alle 4 Eckpunkte eine Länge haben die länger ist als
+            der Radius, wird der Pixel auf 0 gesetzt, wenn einer oder mehr, aber nicht alle, Eckpunkte innerhalb des Radius liegen, dann wird der 
+            Pixel nochmal aufgeteilt in mehrere kleinere Pixel und der gesamte Vorgang wird wiederholt. Wenn alle Punkte im radius liegen
+            WIrd der Pixel auf 1 gesettzt.*/
             for (int y = 0; y < durchmesser * durchmesser; y++)
             {
                 int x = 0;
@@ -294,7 +310,7 @@ namespace Beamgage_Fertigg
 
                 if (a <= radius && b <= radius && c <= radius && d <= radius)
                 {
-                    maskee.Add(255);
+                    maskee.Add(1);
                 }
                 else if (a > radius && b > radius && c > radius && d > radius)
                 {
@@ -303,14 +319,15 @@ namespace Beamgage_Fertigg
                 }
                 else
                 {
-
+                    /*Erstellung von Subpixeln, die Anzahl der Subpixel kann mittels der Varible genauigkeitderSubpixel angepasst werden.
+                     Setzt man z.b Genauigkeit der Subpixel auf 0,1 hätte man 11 Subpixel, da das Programm dann von zb 0 bis 1 läuft in 0,1 schritten*/ 
                     zaehler = 0;
                     x = 0;
                     double ax = xk[x, y];
                     double ay = yk[x, y];
                     double bx = xk[x + 1, y];
                     double cy = yk[x + 2, y];
-
+                    /*zaehler initilisieren um die ANzahl an Subpixeln in x und y richtung zu bekommen*/
                     for (double s = ay; s <= cy; s += genauigkeitderSubpixel)
                     {
                         for (double w = ax; w <= bx; w += genauigkeitderSubpixel)
@@ -319,12 +336,13 @@ namespace Beamgage_Fertigg
                         }
 
                     }
+                    //defeinition der Tabellen, wo die x und y koordinaten der Subpixel gespeichert werden( 4 wegen den 4 Eckpunkten a,b,c,d und zaehler= Anzahl Subpixel)
                     xks = new double[4, Convert.ToInt32(zaehler)];
                     yks = new double[4, Convert.ToInt32(zaehler)];
                     xksentfernung = new double[4, Convert.ToInt32(zaehler)];
                     yksentfernung = new double[4, Convert.ToInt32(zaehler)];
                     vektorlaengensubpixel = new double[4, Convert.ToInt32(zaehler)];
-
+                    /*Speichere die x koordinaten der einzelenen Pixel eckpunkte (a,b,c,d) in einer Tabelle für jeden Pixel*/
                     n = 0;
                     for (double s = ay; s <= cy; s += genauigkeitderSubpixel)
                     {
@@ -346,6 +364,7 @@ namespace Beamgage_Fertigg
                             n++;
                         }
                     }
+                    /*Speichere die y koordinaten der einzelenen Pixel eckpunkte (a,b,c,d) in einer Tabelle für jeden Pixel*/
                     n = 0;
                     for (double s = ay; s <= cy; s += genauigkeitderSubpixel)
                     {
@@ -367,7 +386,7 @@ namespace Beamgage_Fertigg
 
                         }
                     }
-
+                    /*Berechne für die Einzelenen Pixel, für die einzelen Eckpunkte, jeweils die Entfernung zur Mitte*/
                     for (int j = 0; j < zaehler; j++)
                     {
                         for (int i = 0; i <= 3; i++)
@@ -383,6 +402,7 @@ namespace Beamgage_Fertigg
 
                         }
                     }
+                    /*Berechne für die Einzelenen Pixel, für die einzelen Eckpunkte, jeweils die Entfernung zur Mitte*/
                     for (int j = 0; j < zaehler; j++)
                     {
                         for (int i = 0; i <= 3; i++)
@@ -398,7 +418,9 @@ namespace Beamgage_Fertigg
 
                         }
                     }
-
+                    /*Berechnen die Vektorlängen aus den x und y koordinaten abständen zur Mitte, wenn einer der Eckpunkte des Subpixels im Bereich des radius
+                     ist, dann speichern eine 1 sonst eine 0, um den Wert des Gesamten Pixels zu bekommen wird das mit allen subpixeln gemacht und am ende 
+                    den Prozentualen ANteil des Pixels zu berechnen*/
                     laenge = 0;
                     for (int j = 0; j < zaehler; j++)
                     {
@@ -469,9 +491,9 @@ namespace Beamgage_Fertigg
                     // grauwert=Color.FromArgb(255,Convert.ToInt32(maske[i, j]), Convert.ToInt32(maske[i, j]),  Convert.ToInt32(maske[i, j]));
                     // bitmaa.SetPixel(i, j, grauwert);
 
-                    if (maske[i, j] == 255)
+                    if (maske[i, j] == 1)
                     {
-                        grauwert = Color.FromArgb(255, Convert.ToInt32(maske[i, j]), Convert.ToInt32(maske[i, j]), Convert.ToInt32(maske[i, j]));
+                        grauwert = Color.FromArgb(255,255, 255,255);
                         bitmaa.SetPixel(i, j, grauwert);
                     }
                     else if (maske[i, j] == 0)
@@ -501,47 +523,86 @@ namespace Beamgage_Fertigg
         //FrameDate in 2d array umwandeln für Faltung
         int h = 0;
             double[,] framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
-            int durchmesserinint = Convert.ToInt32(Math.Round(DurchmesserinPixel));
-            int mittelpunkt = Convert.ToInt32(Math.Round(RadiusKreis));
-            gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
-            double[] beispiel = new double[10000];
-            for (int y = 0; y < beispiel.Length; y++)
-            {
-               
-                    if ( y == 0)
-                    {
-                        beispiel[ y] = 1;
-                    }
-                    else { beispiel[y] = 0; }
-
-             }
             
+            gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
+           /* double[] beispiel = new double[1000000];
+            for(int i = 0; i < beispiel.Length; i++)
+            {
+                if (i == 5500) { beispiel[i] = 1; }
+                else { beispiel[i] = 0; }
+            }*/
 
            
+           
+
+            //Faltung
+            //i und j sind die höhe und breite des Bildes(der Matrix)
+
+            gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
+            int durchmesserinint = Convert.ToInt32(Math.Round(DurchmesserinPixel));
+           double ö= (Math.Sqrt(maske.Length)) / 2;
+            double elpunkt =  Math.Floor(ö);
+            int mittelpunkt = Convert.ToInt32(elpunkt);
+
+           
+            int xmaske = Convert.ToInt32(Math.Sqrt(maske.Length));
+            int ymaske = Convert.ToInt32(Math.Sqrt(maske.Length));
+
             double summe;
             int ix;
             int jy;
-            for (int y = 0; y < hoeheBildinPixeln; y++)
+
+            if(FrameData.Length<maske.Length)
             {
-                for (int x = 0; x < breiteBildinPixeln; x++)
+                h = 0;
+                framedatain2d = new double[xmaske, ymaske];
+                for (int y = 0; y < ymaske; y++)
                 {
-                    framedatain2d[x, y] = beispiel[h];//FrameData[h];
-                    h++;
+                    for (int x = 0; x < xmaske; x++)
+                    {
+                        if (x < hoeheBildinPixeln && y < breiteBildinPixeln)
+                        {
+                            framedatain2d[x, y] = FrameData[h];
+                            h++;
+                        }
+                        else
+                        {
+                            framedatain2d[x, y] = 0;
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                h = 0;
+                framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
+                for (int y = 0; y < hoeheBildinPixeln; y++)
+                {
+                    for (int x = 0; x < breiteBildinPixeln; x++)
+                    {
+                        framedatain2d[x, y] = FrameData[h];
+                        h++;
+                    }
+
                 }
 
             }
 
-            //Faltung
-            //i und j sind die höhe und breite des Bildes(der Matrix)
+
+
+
+            int groesseMaske = Convert.ToInt32(Math.Sqrt(maske.Length));
+
             for (int j = 0; j < hoeheBildinPixeln; j++)
             {
                 for (int i = 0; i < breiteBildinPixeln; i++)
                 {
                     summe = 0;
-                    //x und y laufen die Filtermaske ab, diese ist so groß, die der Durchmesser des Kreises, den der empfangswinkel bildet
-                    for (int y = 0; y < durchmesserinint; y++)
+                    //x und y laufen die Filtermaske ab, diese ist so groß, wie der Durchmesser des Kreises, den der empfangswinkel bildet
+                    for (int y = 0; y < groesseMaske; y++)
                     {
-                        for (int x = 0; x < durchmesserinint; x++)
+                        for (int x = 0; x < groesseMaske; x++)
                         {
 
                             ix = i + x - mittelpunkt;
@@ -549,13 +610,13 @@ namespace Beamgage_Fertigg
                             //Wenn ix und jy im bereich des Durchmessers liegen, summiere auf
                             /*ix und jy laufen um den wert von framedata der in der mitte liegt und multiplizieren diesen Wert mit den
                              Wert der an der Stelle x,y der maske liegt*/
-                            if (ix < durchmesserinint && ix >= 0 && jy >= 0 && jy < durchmesserinint)
+                            if (ix < breiteBildinPixeln && ix >= 0 && jy >= 0 && jy < hoeheBildinPixeln)
                             {
                                 summe = summe + framedatain2d[ix, jy] * maske[x, y];
                             }
                             else
                             {
-
+                                summe = summe + 0;
                             }
 
 
@@ -567,7 +628,7 @@ namespace Beamgage_Fertigg
                 }
             }
             hotspots = new List<double>();
-            //Hotspot bekommen
+            //Durchlaufe das komplette array gefiltertes bild und speichere den größten wert=Hotspot
             hottspot = 0;
             for (int y = 0; y < hoeheBildinPixeln; y++)
             {
@@ -577,7 +638,7 @@ namespace Beamgage_Fertigg
 
                 }
             }
-            //Prozentualen Anteil des Hotspots an gesamten Werten berechenn
+            //Prozentualen Anteil des Hotspots an gesamten Werten berechenn: Summiere alle werte von gefiltertes bild und dividiere hotspot dadurch
             ProzentualerAnteil = 0;
             double summegesamt = 0;
             for (int j = 0; j < hoeheBildinPixeln; j++)
@@ -590,10 +651,46 @@ namespace Beamgage_Fertigg
             }
             ProzentualerAnteil = hottspot / summegesamt;
 
-        }
+            int z1 = 0;
+            int z2 = 0;
+
+            /*Um den Hotspot einzukreisen speichere die x und y koordinate in den Variablen z1 und z2, dann damit der Hotspot in der mitte liegt 
+             Subtrahiere von der Koordinate den radius des kreises. der kreisdurchmesser ist der gleiche durchmesser wie die Maske*/
+            for(int y = 0; y < hoeheBildinPixeln; y++)
+            {
+                for(int x = 0; x < breiteBildinPixeln; x++)
+                {
+
+                    if (gefiltertesbild[x, y] == hottspot) { z1 = x; z2 = y; }
+
+                    else { }
+                }
+            }
+            bitmaa = new Bitmap(breiteBildinPixeln, hoeheBildinPixeln);
+            for (int y = 0; y < hoeheBildinPixeln; y++)
+            {
+                for (int x = 0; x < breiteBildinPixeln; x++)
+                {
+                    if (framedatain2d[x, y] !=0) {
+                        grauwert = Color.FromArgb(255, Convert.ToInt32(framedatain2d[x,y]), Convert.ToInt32(framedatain2d[x, y]), Convert.ToInt32(framedatain2d[x, y]));
+                            }
+                    else { grauwert = Color.FromArgb(255,0, 0, 0); }
+
+                    bitmaa.SetPixel(x, y, grauwert);
+                }
+            }
+            
+            
+            Graphics g = Graphics.FromImage(bitmaa);
+            Pen p = new Pen(Color.GreenYellow, 1);
+            g.DrawEllipse(p, Convert.ToInt32(z1-RadiusKreis), Convert.ToInt32(z2-radius), Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 
 
 
+                }
+
+
+        
 
 
 
