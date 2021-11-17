@@ -134,7 +134,13 @@ namespace Beamgage_Fertigg
             get { return framedatain2d; }
             set { framedatain2d = value; }
         }
+        private Bitmap bitmaaa;
 
+        public Bitmap Bitmaaa
+        {
+            get { return bitmaaa; }
+            set { bitmaaa = value; }
+        }
 
 
 
@@ -482,7 +488,7 @@ namespace Beamgage_Fertigg
             }
 
 
-
+            bitmaaa = new Bitmap(Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 
             for (int j = 0; j < durchmesser; j++)
             {
@@ -494,18 +500,18 @@ namespace Beamgage_Fertigg
                     if (maske[i, j] == 1)
                     {
                         grauwert = Color.FromArgb(255,255, 255,255);
-                        bitmaa.SetPixel(i, j, grauwert);
+                        bitmaaa.SetPixel(i, j, grauwert);
                     }
                     else if (maske[i, j] == 0)
                     {
                         grauwert = Color.FromArgb(255, 0, 0, 0);
-                        bitmaa.SetPixel(i, j, grauwert);
+                        bitmaaa.SetPixel(i, j, grauwert);
 
                     }
                     else
                     {
                         grauwert = Color.FromArgb(255, 255, 0, 0);
-                        bitmaa.SetPixel(i, j, grauwert);
+                        bitmaaa.SetPixel(i, j, grauwert);
                     }
 
 
@@ -524,7 +530,7 @@ namespace Beamgage_Fertigg
         int h = 0;
             double[,] framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
             
-            gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
+           // gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
            /* double[] beispiel = new double[1000000];
             for(int i = 0; i < beispiel.Length; i++)
             {
@@ -551,11 +557,25 @@ namespace Beamgage_Fertigg
             double summe;
             int ix;
             int jy;
+            framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
+            for(int y=0;y< hoeheBildinPixeln; y++)
+            {
+                for(int x=0;x< breiteBildinPixeln; x++)
+                {
 
-            if(FrameData.Length<maske.Length)
+                    framedatain2d[x, y] = FrameData[h];
+                    h++;
+
+
+                }
+            }
+
+
+            /*if(FrameData.Length<maske.Length)
             {
                 h = 0;
                 framedatain2d = new double[xmaske, ymaske];
+               
                 for (int y = 0; y < ymaske; y++)
                 {
                     for (int x = 0; x < xmaske; x++)
@@ -589,7 +609,7 @@ namespace Beamgage_Fertigg
 
             }
 
-
+            */
 
 
             int groesseMaske = Convert.ToInt32(Math.Sqrt(maske.Length));
@@ -683,7 +703,7 @@ namespace Beamgage_Fertigg
             
             Graphics g = Graphics.FromImage(bitmaa);
             Pen p = new Pen(Color.GreenYellow, 1);
-            g.DrawEllipse(p, Convert.ToInt32(z1-RadiusKreis), Convert.ToInt32(z2-radius), Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
+            g.DrawEllipse(p, Convert.ToInt32(z1-RadiusKreis), Convert.ToInt32(z2-RadiusKreis), Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 
 
 

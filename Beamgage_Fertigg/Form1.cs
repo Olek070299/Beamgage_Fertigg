@@ -44,8 +44,9 @@ namespace Beamgage_Fertigg
 
         private void button3_Click(object sender, EventArgs e)
         {
-            test2.Path = eingabe.Text;
-            pictureBox1.Image = Image.FromFile(test.Path);
+            //test2.Path = @"C:\Users\klobr\Downloads\62_0001.jpeg";
+            test2.testbitmap();
+            pictureBox1.Image = test2.Bitmaaaaa;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
@@ -80,7 +81,7 @@ namespace Beamgage_Fertigg
         {
             //test2.NewFrameFunction();
 
-            test2.getHotspot(2.7675E-4, 0.2, 0.00000369, 0.00000369, 100, 100, 0.01);
+            test2.getHotspot(1.7E-3, 0.2, 0.00000369, 0.00000369, test2.Bitmaaaaa.Height, test2.Bitmaaaaa.Width, 1);
             pictureBox1.Image = test2.Bitmaa;
 
             /*for (int y = 0; y < 2; y++)
@@ -91,14 +92,14 @@ namespace Beamgage_Fertigg
                 }
             }*/
 
-            for (int j = 0; j < 100; j++)
+            /*for (int j = 0; j < test2.Bitmaaaaa.Height; j++)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < test2.Bitmaaaaa.Width; i++)
                 {
                     listBox1.Items.Add(test2.GefiltertesBild[i,j]);
                 }
                
-            }
+            }*/
             listBox1.Items.Add(test2.Hottspot);
             listBox1.Items.Add(test2.ProzentualerAnteil);
         }

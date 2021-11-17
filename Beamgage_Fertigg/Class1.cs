@@ -48,7 +48,17 @@ namespace Beamgage_Fertigg
             set { frameData = value; }
         }
 
-      
+
+        private Bitmap bitmaaaaa;
+        public Bitmap Bitmaaaaa
+        {
+            get { return bitmaaaaa; }
+            set { bitmaaaaa = value; }
+        }
+
+        private double intensity;
+        public double Intensity { get { return intensity; } set { intensity = value; } }
+
 
 
         // Declare the BeamGage Automation client
@@ -206,6 +216,35 @@ namespace Beamgage_Fertigg
 
             }
 
+
+
+        }
+
+        public void testbitmap()
+        {
+          
+            Color grau = new Color();
+
+            int n = 0;
+            bitmaaaaa = new Bitmap(@"C:\Users\klobr\Downloads\62_0001.jpeg",true);
+            frameData = new double[bitmaaaaa.Width * bitmaaaaa.Height];
+            for(int i = 0; i < bitmaaaaa.Height; i++)
+            {
+                for(int j = 0; j < bitmaaaaa.Width; j++)
+                {
+                    grau = bitmaaaaa.GetPixel(j, i);
+                    byte rot = grau.R;
+                    byte grün = grau.G;
+                    byte blau = grau.B;
+
+
+
+                    intensity = Convert.ToDouble((0.999*rot+0.587*grün+0.114*blau)/3);
+                    frameData[n] = intensity;
+                    n++;
+
+                }
+            }
 
 
         }

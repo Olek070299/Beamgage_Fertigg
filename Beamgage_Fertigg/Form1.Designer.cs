@@ -101,9 +101,9 @@ namespace Beamgage_Fertigg
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(215, 10);
+            this.listBox1.Location = new System.Drawing.Point(127, 10);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 420);
+            this.listBox1.Size = new System.Drawing.Size(208, 420);
             this.listBox1.TabIndex = 6;
             // 
             // eingabe
@@ -125,9 +125,9 @@ namespace Beamgage_Fertigg
             // 
             // FrameDatamithundkpixeln
             // 
-            this.FrameDatamithundkpixeln.Location = new System.Drawing.Point(4, 374);
+            this.FrameDatamithundkpixeln.Location = new System.Drawing.Point(0, 364);
             this.FrameDatamithundkpixeln.Name = "FrameDatamithundkpixeln";
-            this.FrameDatamithundkpixeln.Size = new System.Drawing.Size(92, 56);
+            this.FrameDatamithundkpixeln.Size = new System.Drawing.Size(130, 21);
             this.FrameDatamithundkpixeln.TabIndex = 9;
             this.FrameDatamithundkpixeln.Text = "FrameDatamithundkpixeln";
             this.FrameDatamithundkpixeln.UseVisualStyleBackColor = true;
@@ -135,7 +135,7 @@ namespace Beamgage_Fertigg
             // 
             // HeißePixel
             // 
-            this.HeißePixel.Location = new System.Drawing.Point(115, 13);
+            this.HeißePixel.Location = new System.Drawing.Point(8, 391);
             this.HeißePixel.Name = "HeißePixel";
             this.HeißePixel.Size = new System.Drawing.Size(94, 56);
             this.HeißePixel.TabIndex = 10;
