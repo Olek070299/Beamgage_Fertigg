@@ -686,7 +686,7 @@ namespace Beamgage_Fertigg
                     else { }
                 }
             }
-            bitmaa = new Bitmap(breiteBildinPixeln, hoeheBildinPixeln);
+            /*bitmaa = new Bitmap(breiteBildinPixeln, hoeheBildinPixeln);
             for (int y = 0; y < hoeheBildinPixeln; y++)
             {
                 for (int x = 0; x < breiteBildinPixeln; x++)
@@ -699,9 +699,9 @@ namespace Beamgage_Fertigg
                     bitmaa.SetPixel(x, y, grauwert);
                 }
             }
+            */
             
-            
-            Graphics g = Graphics.FromImage(bitmaa);
+            Graphics g = Graphics.FromImage(Bitmaaaaa);
             Pen p = new Pen(Color.GreenYellow, 1);
             g.DrawEllipse(p, Convert.ToInt32(z1-RadiusKreis), Convert.ToInt32(z2-RadiusKreis), Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 

@@ -57,9 +57,9 @@ namespace Beamgage_Fertigg
 
         private void button5_Click(object sender, EventArgs e)
         {
-            test2.picturemachen(100, 100);
+            test2.picturemachen(100,100);
 
-            pictureBox1.Image = test2.Bitma;
+            pictureBox1.Image = test2.Bitmaaaaa;
 
 
          
@@ -81,8 +81,8 @@ namespace Beamgage_Fertigg
         {
             //test2.NewFrameFunction();
 
-            test2.getHotspot(1.7E-3, 0.2, 0.00000369, 0.00000369, test2.Bitmaaaaa.Height, test2.Bitmaaaaa.Width, 1);
-            pictureBox1.Image = test2.Bitmaa;
+            test2.getHotspot(1.7E-3, 0.2, 0.00000369, 0.00000369, test2.Bitmaaaaa.Height, test2.Bitmaaaaa.Width, 0.1);
+            pictureBox1.Image = test2.Bitmaaaaa;
 
             /*for (int y = 0; y < 2; y++)
             {

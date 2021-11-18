@@ -113,18 +113,18 @@ namespace Beamgage_Fertigg
            public void picturemachen(int hoehe,int breite)
         { 
             //Bitma= Bitmap 
-            bitma=new Bitmap(breite,hoehe);
+            bitmaaaaa=new Bitmap(breite,hoehe);
             int i = 0;
             /*y läuft nach unten die höhe des Bildes ab und x die Breite, an die stelle x,y wird dann die Grauwertstufe eingesetzt, die beim Array frameData 
              * an der stelle i ist, i läuft das Array frame date vom ersten bis zum letzten Eintrag durch*/
-            for (int y = 0; y < bitma.Height; y++)
-                {for (int x = 0; x < bitma.Width; x++){
+            for (int y = 0; y < bitmaaaaa.Height; y++)
+                {for (int x = 0; x < bitmaaaaa.Width; x++){
 
                     Color grauwertstufe = new Color();
 
                     grauwertstufe= Color.FromArgb(255,Convert.ToInt32(frameData[i]), Convert.ToInt32(frameData[i]), Convert.ToInt32(frameData[i]));
                    
-                    bitma.SetPixel(x, y, grauwertstufe);
+                    bitmaaaaa.SetPixel(x, y, grauwertstufe);
                     i++;
 
                     
@@ -226,7 +226,7 @@ namespace Beamgage_Fertigg
             Color grau = new Color();
 
             int n = 0;
-            bitmaaaaa = new Bitmap(@"C:\Users\klobr\Downloads\62_0001.jpeg",true);
+           bitmaaaaa = new Bitmap(@"C:\Users\klobr\Downloads\62_0001.jpeg",true);
             frameData = new double[bitmaaaaa.Width * bitmaaaaa.Height];
             for(int i = 0; i < bitmaaaaa.Height; i++)
             {
@@ -241,6 +241,20 @@ namespace Beamgage_Fertigg
 
                     intensity = Convert.ToDouble((0.999*rot+0.587*grün+0.114*blau)/3);
                     frameData[n] = intensity;
+                    n++;
+
+                    
+
+
+                }
+            }
+            n = 0;
+            for(int y = 0; y < bitmaaaaa.Height; y++)
+            {
+                for(int x = 0; x < bitmaaaaa.Width; x++)
+                {
+                    grau = Color.FromArgb(255, Convert.ToInt32(frameData[n]), Convert.ToInt32(frameData[n]), Convert.ToInt32(frameData[n]));
+                    bitmaaaaa.SetPixel(x, y, grau);
                     n++;
 
                 }
