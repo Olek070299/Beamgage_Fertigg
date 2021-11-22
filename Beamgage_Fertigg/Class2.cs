@@ -673,15 +673,22 @@ namespace Beamgage_Fertigg
 
             int z1 = 0;
             int z2 = 0;
+            int hotspotdetektor = 0;
 
-            /*Um den Hotspot einzukreisen speichere die x und y koordinate in den Variablen z1 und z2, dann damit der Hotspot in der mitte liegt 
-             Subtrahiere von der Koordinate den radius des kreises. der kreisdurchmesser ist der gleiche durchmesser wie die Maske*/
-            for(int y = 0; y < hoeheBildinPixeln; y++)
+           
+
+
+
+
+
+                    /*Um den Hotspot einzukreisen speichere die x und y koordinate in den Variablen z1 und z2, dann damit der Hotspot in der mitte liegt 
+                     Subtrahiere von der Koordinate den radius des kreises. der kreisdurchmesser ist der gleiche durchmesser wie die Maske*/
+                    for (int y = 0; y < hoeheBildinPixeln; y++)
             {
                 for(int x = 0; x < breiteBildinPixeln; x++)
                 {
 
-                    if (gefiltertesbild[x, y] == hottspot) { z1 = x; z2 = y; }
+                    if (gefiltertesbild[x, y] == hottspot) { z1 = x; z2 = y;  }
 
                     else { }
                 }
@@ -705,6 +712,8 @@ namespace Beamgage_Fertigg
             Pen p = new Pen(Color.GreenYellow, 1);
             g.DrawEllipse(p, Convert.ToInt32(z1-RadiusKreis), Convert.ToInt32(z2-RadiusKreis), Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 
+            grauwert = Color.FromArgb(255, 255, 0, 0);
+            Bitmaaaaa.SetPixel(z1, z2, grauwert);
 
 
                 }
