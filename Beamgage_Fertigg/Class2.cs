@@ -144,7 +144,7 @@ namespace Beamgage_Fertigg
 
 
 
-        public void getHotspot(double empfangswinkel, double Bildabstand, double Pixelbreite, double Pixelhöhe, int hoeheBildinPixeln, int breiteBildinPixeln, double genauigkeitderSubpixel)
+        public void getHotspot(double empfangswinkel, double Bildabstand, double Pixelbreite, double Pixelhoehe, int hoeheBildinPixeln, int breiteBildinPixeln, double genauigkeitderSubpixel)
         {
 
             Color grauwert = new Color();
@@ -488,14 +488,14 @@ namespace Beamgage_Fertigg
             }
 
 
-            bitmaaa = new Bitmap(Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
+          /* bitmaaa = new Bitmap(Convert.ToInt32(DurchmesserinPixel), Convert.ToInt32(DurchmesserinPixel));
 
             for (int j = 0; j < durchmesser; j++)
             {
                 for (int i = 0; i < durchmesser; i++)
                 {
-                    // grauwert=Color.FromArgb(255,Convert.ToInt32(maske[i, j]), Convert.ToInt32(maske[i, j]),  Convert.ToInt32(maske[i, j]));
-                    // bitmaa.SetPixel(i, j, grauwert);
+                    grauwert=Color.FromArgb(255,Convert.ToInt32(maske[i, j]), Convert.ToInt32(maske[i, j]),  Convert.ToInt32(maske[i, j]));
+                    bitmaa.SetPixel(i, j, grauwert);
 
                     if (maske[i, j] == 1)
                     {
@@ -516,7 +516,7 @@ namespace Beamgage_Fertigg
 
 
                 }
-            }
+            }*/
 
 
 
@@ -528,7 +528,7 @@ namespace Beamgage_Fertigg
 
         //FrameDate in 2d array umwandeln für Faltung
         int h = 0;
-            double[,] framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
+            //double[,] framedatain2d = new double[breiteBildinPixeln, hoeheBildinPixeln];
             
            // gefiltertesbild = new double[breiteBildinPixeln, hoeheBildinPixeln];
            /* double[] beispiel = new double[1000000];
@@ -614,39 +614,86 @@ namespace Beamgage_Fertigg
 
             int groesseMaske = Convert.ToInt32(Math.Sqrt(maske.Length));
 
-            for (int j = 0; j < hoeheBildinPixeln; j++)
+            if (empfangswinkel < 0.1)
             {
-                for (int i = 0; i < breiteBildinPixeln; i++)
+
+                for (int j = 0; j < hoeheBildinPixeln; j++)
                 {
-                    summe = 0;
-                    //x und y laufen die Filtermaske ab, diese ist so groß, wie der Durchmesser des Kreises, den der empfangswinkel bildet
-                    for (int y = 0; y < groesseMaske; y++)
+                    for (int i = 0; i < breiteBildinPixeln; i++)
                     {
-                        for (int x = 0; x < groesseMaske; x++)
+                        summe = 0;
+                        //x und y laufen die Filtermaske ab, diese ist so groß, wie der Durchmesser des Kreises, den der empfangswinkel bildet
+                        for (int y = 0; y < groesseMaske; y++)
                         {
-
-                            ix = i + x - mittelpunkt;
-                            jy = j + y - mittelpunkt;
-                            //Wenn ix und jy im bereich des Durchmessers liegen, summiere auf
-                            /*ix und jy laufen um den wert von framedata der in der mitte liegt und multiplizieren diesen Wert mit den
-                             Wert der an der Stelle x,y der maske liegt*/
-                            if (ix < breiteBildinPixeln && ix >= 0 && jy >= 0 && jy < hoeheBildinPixeln)
+                            for (int x = 0; x < groesseMaske; x++)
                             {
-                                summe = summe + framedatain2d[ix, jy] * maske[x, y];
-                            }
-                            else
-                            {
-                                summe = summe + 0;
-                            }
+
+                                ix = i + x - mittelpunkt;
+                                jy = j + y - mittelpunkt;
+                                //Wenn ix und jy im bereich des Durchmessers liegen, summiere auf
+                                /*ix und jy laufen um den wert von framedata der in der mitte liegt und multiplizieren diesen Wert mit den
+                                 Wert der an der Stelle x,y der maske liegt*/
+                                if (ix < breiteBildinPixeln && ix >= 0 && jy >= 0 && jy < hoeheBildinPixeln)
+                                {
+                                    summe = summe + framedatain2d[ix, jy] * maske[x, y];
+                                }
+                                else
+                                {
+                                    summe = summe + 0;
+                                }
 
 
+                            }
                         }
-                    }
-                    //Der Wert an der stelle i,j ist gleich der Summe der Werte
-                    gefiltertesbild[i, j] = summe;
+                        //Der Wert an der stelle i,j ist gleich der Summe der Werte
+                        gefiltertesbild[i, j] = summe;
 
+                    }
                 }
             }
+            else
+            {
+
+                for (int j = 0; j < hoeheBildinPixeln; j=j+10)
+                {
+                    for (int i = 0; i < breiteBildinPixeln; i=i+10)
+                    {
+                        summe = 0;
+                        //x und y laufen die Filtermaske ab, diese ist so groß, wie der Durchmesser des Kreises, den der empfangswinkel bildet
+                        for (int y = 0; y < groesseMaske; y++)
+                        {
+                            for (int x = 0; x < groesseMaske; x++)
+                            {
+
+                                ix = i + x - mittelpunkt;
+                                jy = j + y - mittelpunkt;
+                                //Wenn ix und jy im bereich des Durchmessers liegen, summiere auf
+                                /*ix und jy laufen um den wert von framedata der in der mitte liegt und multiplizieren diesen Wert mit den
+                                 Wert der an der Stelle x,y der maske liegt*/
+                                if (ix < breiteBildinPixeln && ix >= 0 && jy >= 0 && jy < hoeheBildinPixeln)
+                                {
+                                    summe = summe + framedatain2d[ix, jy] * maske[x, y];
+                                }
+                                else
+                                {
+                                    summe = summe + 0;
+                                }
+
+
+                            }
+                        }
+                        //Der Wert an der stelle i,j ist gleich der Summe der Werte
+                        gefiltertesbild[i, j] = summe;
+
+                    }
+                }
+
+
+
+
+
+            }
+
             hotspots = new List<double>();
             //Durchlaufe das komplette array gefiltertes bild und speichere den größten wert=Hotspot
             hottspot = 0;
@@ -665,7 +712,7 @@ namespace Beamgage_Fertigg
             {
                 for (int i = 0; i < breiteBildinPixeln; i++)
                 {
-                    summegesamt = summegesamt + gefiltertesbild[i, j];
+                    summegesamt = summegesamt + Framedatain2d[i, j];
 
                 }
             }
@@ -673,7 +720,7 @@ namespace Beamgage_Fertigg
 
             int z1 = 0;
             int z2 = 0;
-            int hotspotdetektor = 0;
+          
 
            
 

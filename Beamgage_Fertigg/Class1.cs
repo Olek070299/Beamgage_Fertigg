@@ -102,15 +102,26 @@ namespace Beamgage_Fertigg
         /// </summary>
         public void NewFrameFunction()
         {
+            double maxframedata = 0;
             //Obtain the frame data and use it
             //Speichere Daten in frameData array
             frameData = _bg.ResultsPriorityFrame.DoubleData;
-   
+
+
+            maxframedata = frameData.Max();
+
+        for (int i = 0; i < frameData.Length; i++)
+            {
+
+                frameData[i] = 255 * (frameData[i] / maxframedata);
+
+
+            }
         }
 
 
             //Bild erstellen aus dem array fameData
-           public void picturemachen(int hoehe,int breite)
+           public void picturemachen(int breite,int hoehe)
         { 
             //Bitma= Bitmap 
             bitmaaaaa=new Bitmap(breite,hoehe);
